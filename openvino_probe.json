@@ -1,0 +1,11 @@
+{
+  "openvino": "2026.4.0-22959-99c81491cc3-releases/2026/4",
+  "devices": [
+    "CPU"
+  ],
+  "cpu_available": true,
+  "compiled_target": "CPU",
+  "inference_ms": 4.969,
+  "risk_score": 0.4875,
+  "status": "PASS"
+}
