@@ -10,7 +10,6 @@ SCENARIOS = {
     "Dynamic Obstacle": dict(action="Move through corridor", confidence=.97, age=.5, clearance=.19, drift=.09, obstacle=True, keepout=False, estop=False),
     "Keep-out Zone Violation": dict(action="Enter restricted zone", confidence=.98, age=.3, clearance=.76, drift=.06, obstacle=False, keepout=True, estop=False),
     "Operator Emergency Stop": dict(action="Continue motion", confidence=.99, age=.2, clearance=.91, drift=.04, obstacle=False, keepout=False, estop=True),
-    "Bimanual / Shared-Object Conflict": dict(action="Dual-arm handoff", confidence=.97, age=.4, clearance=.48, drift=.07, obstacle=False, keepout=False, estop=False, shared_conflict=True),
 }
 
 def decide(x):
@@ -22,18 +21,16 @@ def decide(x):
         "Dynamic obstacle clear": not x["obstacle"],
         "Keep-out zone clear": not x["keepout"],
         "Emergency stop inactive": not x["estop"],
-        "Shared-object conflict clear": not x.get("shared_conflict", False),
     }
     reasons=[]
     if x["estop"]: reasons.append("Operator emergency stop is active.")
     if x["obstacle"]: reasons.append("Dynamic obstacle detected in planned path.")
     if x["keepout"]: reasons.append("Trajectory intersects keep-out zone.")
-    if x.get("shared_conflict", False): reasons.append("Bimanual/shared-object conflict detected; coordinated action is blocked.")
     if x["age"] > 2: reasons.append(f"Scene is stale: {x['age']:.1f}s > 2.0s.")
     if x["drift"] > .30: reasons.append(f"Scene drift is {x['drift']:.2f} > 0.30.")
     if x["clearance"] < .25: reasons.append(f"Clearance is {x['clearance']:.2f}m < 0.25m.")
     if x["confidence"] < .82: reasons.append("Perception confidence is below policy.")
-    hard = x["estop"] or x["obstacle"] or x["keepout"] or x.get("shared_conflict", False)
+    hard = x["estop"] or x["obstacle"] or x["keepout"]
     soft = x["age"] > 2 or x["drift"] > .30 or x["clearance"] < .25 or x["confidence"] < .82
     decision = "REJECT" if hard else ("ROLLBACK" if soft else "PROMOTE")
     if not reasons: reasons=["All runtime gates passed."]
@@ -122,16 +119,6 @@ for col,label,value in [
     (d,"DRIFT",f"{x['drift']*100:.0f}%"),
     (e,"EDGE LATENCY",f"{latency:.1f}ms" if ok else "N/A")]:
     col.markdown(f'<div class="card"><div class="label">{label}</div><div class="metric">{value}</div></div>',unsafe_allow_html=True)
-
-st.markdown(
-    f'<div class="card" style="padding:12px 16px;margin-bottom:14px">'
-    f'<span class="good">● OPENVINO READY</span>&nbsp;&nbsp; '
-    f'<b>{ov_version}</b>&nbsp;&nbsp; '
-    f'DEVICE: <b>{"CPU" if ok else "UNAVAILABLE"}</b>&nbsp;&nbsp; '
-    f'EDGE INFERENCE: <b>{latency:.2f} ms</b>'
-    f'</div>',
-    unsafe_allow_html=True
-)
 
 st.write("")
 left,right=st.columns([1.25,1])
