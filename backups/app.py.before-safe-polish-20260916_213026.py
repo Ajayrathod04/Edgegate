@@ -148,26 +148,6 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-st.markdown("""
-<div style="
-padding:16px 20px;
-margin:12px 0 18px 0;
-border:1px solid #26384d;
-border-radius:16px;
-background:linear-gradient(90deg,#0d1722,#101d2b);
-">
-<div style="font-size:0.68rem;letter-spacing:.16em;color:#62e6ff;font-weight:800">
-PHYSICAL AI RUNTIME
-</div>
-<div style="font-size:1.45rem;font-weight:900;margin-top:5px">
-AI proposes. Evidence decides.
-</div>
-<div style="font-size:.82rem;color:#91a3b8;margin-top:6px">
-Physical-AI proposal → OpenVINO edge path → evidence verification → runtime authorization
-</div>
-</div>
-""", unsafe_allow_html=True)
-
 st.write("")
 left,right=st.columns([1.25,1])
 

@@ -77,26 +77,11 @@ h1{letter-spacing:-.05em}
 .decision h1{font-size:3.3rem;margin:8px 0}
 .good{color:#61e6a8}.warn{color:#f4c36b}.bad{color:#ff737d}
 .pill{display:inline-block;border:1px solid #29435a;border-radius:99px;padding:6px 11px;margin:4px;color:#a9bfd3;font-size:.68rem}
- .stage{padding:14px;border:1px solid #213044;border-radius:14px;background:#0b1119;text-align:center}
-.flow{display:flex;align-items:stretch;gap:10px;margin:18px 0 22px}
-.flowbox{flex:1;padding:18px 14px;border:1px solid #26384d;border-radius:16px;background:linear-gradient(180deg,#101b28,#0b1119);text-align:center}
-.flowbox .num{font-size:.65rem;letter-spacing:.16em;color:#62e6ff;font-weight:800}
-.flowbox .title{font-size:1rem;font-weight:800;margin-top:7px}
-.flowbox .desc{font-size:.72rem;color:#8294ab;margin-top:5px}
-.flowarrow{display:flex;align-items:center;color:#62e6ff;font-size:1.4rem;font-weight:900}
-.proof{padding:17px;border:1px solid #26384d;border-radius:16px;background:#0c141e}
-.proof .value{font-size:1.7rem;font-weight:900}
-.proof .label{margin-top:4px}
-.verdict{padding:16px 18px;border-radius:16px;border:1px solid #35c98b;background:#0b1714}
-@media(max-width:900px){.flow{flex-direction:column}.flowarrow{justify-content:center;transform:rotate(90deg)}}
+.stage{padding:14px;border:1px solid #213044;border-radius:14px;background:#0b1119;text-align:center}
 </style>
 """, unsafe_allow_html=True)
 
-scenario=st.sidebar.selectbox(
-    "REPLAY SAFETY SCENARIO",
-    list(SCENARIOS),
-    index=list(SCENARIOS).index("Bimanual / Shared-Object Conflict")
-)
+scenario=st.sidebar.selectbox("REPLAY SAFETY SCENARIO",list(SCENARIOS))
 x=SCENARIOS[scenario]
 decision,gates,reasons=decide(x)
 
@@ -147,26 +132,6 @@ st.markdown(
     f'</div>',
     unsafe_allow_html=True
 )
-
-st.markdown("""
-<div style="
-padding:16px 20px;
-margin:12px 0 18px 0;
-border:1px solid #26384d;
-border-radius:16px;
-background:linear-gradient(90deg,#0d1722,#101d2b);
-">
-<div style="font-size:0.68rem;letter-spacing:.16em;color:#62e6ff;font-weight:800">
-PHYSICAL AI RUNTIME
-</div>
-<div style="font-size:1.45rem;font-weight:900;margin-top:5px">
-AI proposes. Evidence decides.
-</div>
-<div style="font-size:.82rem;color:#91a3b8;margin-top:6px">
-Physical-AI proposal → OpenVINO edge path → evidence verification → runtime authorization
-</div>
-</div>
-""", unsafe_allow_html=True)
 
 st.write("")
 left,right=st.columns([1.25,1])
